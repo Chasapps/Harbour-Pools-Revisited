@@ -35,13 +35,10 @@ function renderGrid(pools){
   grid.innerHTML = '';
 
   const q = (document.getElementById('searchBox').value || '').toLowerCase();
-  const type = document.getElementById('typeFilter').value || '';
-  const area = document.getElementById('areaFilter').value || '';
-
-  const filtered = pools.filter(p => {
+const filtered = pools.filter(p => {
     const matchQ = !q || p.name.toLowerCase().includes(q) || p.suburb.toLowerCase().includes(q);
-    const matchT = !type || p.type === type;
-    const matchA = !area || p.area === area;
+    const matchT = true; // type filter removed
+    const matchA = true; // area filter removed
     return matchQ && matchT && matchA;
   });
 
@@ -195,7 +192,7 @@ function toggleVisitedFromMap(pools, id, checked){
 function init(){
   fetch('pools.json').then(r=>r.json()).then(pools => { window.__POOLS = pools;
     // Filters & buttons
-    ['searchBox','typeFilter','areaFilter'].forEach(id => {
+    ['searchBox'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => { renderGrid(pools); });
       document.getElementById(id).addEventListener('change', () => { renderGrid(pools); });
     });
@@ -207,6 +204,14 @@ function init(){
     document.getElementById('makeCardBtn').addEventListener('click', () => makeCompletionCard(pools));
     document.getElementById('openMapBtn').addEventListener('click', () => {
       if (!MAP) initMap(pools);
+    // If no progress exists yet, highlight the Import button
+try{
+  const hasAny = Object.keys(loadState()||{}).length > 0;
+  if (!hasAny){
+    const btn = document.getElementById('importBtn');
+    if (btn){ btn.classList.add('pulse'); btn.focus(); }
+  }
+}catch{}
       const card = document.getElementById('mapCard');
       card.scrollIntoView({behavior:'smooth'});
     });

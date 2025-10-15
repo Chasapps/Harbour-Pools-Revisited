@@ -146,6 +146,7 @@ function initMap(pools){
   const card = document.getElementById('mapCard');
   card.style.display = '';
   MAP = L.map('map').setView([-33.86, 151.22], 11);
+  setTimeout(()=>{ try{ MAP.invalidateSize(true); }catch(e){} }, 100);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19, attribution: '&copy; OpenStreetMap'
   }).addTo(MAP);
@@ -203,7 +204,9 @@ function init(){
     document.getElementById('printBtn').addEventListener('click', () => window.print());
     document.getElementById('makeCardBtn').addEventListener('click', () => makeCompletionCard(pools));
     document.getElementById('openMapBtn').addEventListener('click', () => {
-      if (!MAP) initMap(pools);
+      const card = document.getElementById('mapCard');
+      if (card.style.display === 'none') card.style.display = '';
+      if (!MAP) { initMap(pools); } else { try{ MAP.invalidateSize(); }catch(e){} }
     // If no progress exists yet, highlight the Import button
 try{
   const hasAny = Object.keys(loadState()||{}).length > 0;
@@ -224,7 +227,9 @@ document.addEventListener('DOMContentLoaded', init);
 
 function jumpToOnMap(p){
   const card = document.getElementById('mapCard');
+  if (card.style.display === 'none') card.style.display = '';
   if (!MAP) initMap([p, ...window.__POOLS]); // create with at least this pool
+  try{ MAP.invalidateSize(); }catch(e){}
   MAP.setView([p.lat, p.lng], 14, {animate:true});
   const m = markers[p.id]; if (m) m.openPopup();
   card.scrollIntoView({behavior:'smooth'});

@@ -45,7 +45,7 @@ button.small{padding:6px 10px;font-size:13px}
 .badge.locked img{filter:grayscale(1);opacity:.4}
 .badge .label{font-weight:700}
 #mapCard{display:none}
-#map{height:420px;border-radius:12px;border:2px solid var(--border);}
+#map{height:60vh;border-radius:12px;border:2px solid var(--border);}
 .tab-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .muted{color:var(--muted)}
 .small{font-size:.9em}

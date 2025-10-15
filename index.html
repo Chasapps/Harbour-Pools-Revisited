@@ -28,20 +28,31 @@
           <div id="progressLabel">0 / 0 visited</div>
           <div class="progress"><div id="progressBar" class="bar" style="width:0%"></div></div>
         </div>
-        <div class="muted small" style="margin:6px 0 4px 0;">Tip: If you have a backup, <strong>import your progress first</strong>.</div>
         <div class="actions">
-          <button id="importBtn" class="primary">Import progress</button>
-          <input type="file" id="importFile" accept=".json,application/json" style="display:none">
-          <button id="exportBtn" class="secondary">Export progress</button>
           <button id="openMapBtn" class="alt">Map view</button>
-          <a class="secondary" href="print.html" target="_blank" style="text-decoration:none;background:#4d4dff;padding:10px 14px;border-radius:10px;color:#fff">Printable stamp-book</a>
+          <a class="secondary" href="print.html" target="_blank" style="text-decoration:none;padding:10px 14px;border-radius:10px;color:#fff">Printable stamp-book</a>
+          <button id="exportBtn" class="secondary">Export progress</button>
+          <button id="importBtn" class="secondary">Import progress</button>
+          <input type="file" id="importFile" accept=".json,application/json" style="display:none">
           <button id="printBtn">Print passport</button>
           <button id="makeCardBtn">Share completion card</button>
           <button id="resetBtn" class="danger small">Reset</button>
         </div>
       </div>
       <div class="row filters">
-        <input id="searchBox" type="search" placeholder="Search name or suburb…" /></div>
+        <input id="searchBox" type="search" placeholder="Search name or suburb…" />
+        <select id="typeFilter">
+          <option value="">All types</option>
+          <option value="harbour lap pool">Harbour lap pools</option>
+          <option value="harbour baths (netted)">Harbour baths (netted)</option>
+          <option value="tidal harbour pool">Tidal harbour pools</option>
+        </select>
+        <select id="areaFilter">
+          <option value="">All areas</option>
+          <option value="Harbour">Harbour</option>
+          <option value="Middle Harbour">Middle Harbour</option>
+        </select>
+      </div>
       <div class="tab-row">
         <span class="muted small">Tip: use Map view to mark visits from pins.</span>
       </div>

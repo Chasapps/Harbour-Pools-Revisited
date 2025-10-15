@@ -35,10 +35,13 @@ function renderGrid(pools){
   grid.innerHTML = '';
 
   const q = (document.getElementById('searchBox').value || '').toLowerCase();
-const filtered = pools.filter(p => {
+  const type = document.getElementById('typeFilter').value || '';
+  const area = document.getElementById('areaFilter').value || '';
+
+  const filtered = pools.filter(p => {
     const matchQ = !q || p.name.toLowerCase().includes(q) || p.suburb.toLowerCase().includes(q);
-    const matchT = true; // type filter removed
-    const matchA = true; // area filter removed
+    const matchT = !type || p.type === type;
+    const matchA = !area || p.area === area;
     return matchQ && matchT && matchA;
   });
 
@@ -146,6 +149,7 @@ function initMap(pools){
   const card = document.getElementById('mapCard');
   card.style.display = '';
   MAP = L.map('map').setView([-33.86, 151.22], 11);
+  // Ensure proper sizing after reveal
   setTimeout(()=>{ try{ MAP.invalidateSize(true); }catch(e){} }, 100);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19, attribution: '&copy; OpenStreetMap'
@@ -193,7 +197,7 @@ function toggleVisitedFromMap(pools, id, checked){
 function init(){
   fetch('pools.json').then(r=>r.json()).then(pools => { window.__POOLS = pools;
     // Filters & buttons
-    ['searchBox'].forEach(id => {
+    ['searchBox','typeFilter','areaFilter'].forEach(id => {
       document.getElementById(id).addEventListener('input', () => { renderGrid(pools); });
       document.getElementById(id).addEventListener('change', () => { renderGrid(pools); });
     });
@@ -207,15 +211,6 @@ function init(){
       const card = document.getElementById('mapCard');
       if (card.style.display === 'none') card.style.display = '';
       if (!MAP) { initMap(pools); } else { try{ MAP.invalidateSize(); }catch(e){} }
-    // If no progress exists yet, highlight the Import button
-try{
-  const hasAny = Object.keys(loadState()||{}).length > 0;
-  if (!hasAny){
-    const btn = document.getElementById('importBtn');
-    if (btn){ btn.classList.add('pulse'); btn.focus(); }
-  }
-}catch{}
-      const card = document.getElementById('mapCard');
       card.scrollIntoView({behavior:'smooth'});
     });
 
